@@ -2,11 +2,6 @@ var app = new Vue({
     el: "#app",
     data() {
         return {
-           password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
-          correctPassword: "9999", // Đặt mật khẩu của bạn ở đây
-         isPasswordCorrect: false, // Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
-          maxAttempts: 99999993, // Số lần tối đa được phép nhập mật khẩu
-         currentAttempt: 0,
             ifshow: true,
             checked: false,
             radio: '1',
@@ -85,27 +80,6 @@ var app = new Vue({
             ayMenu.style.left = this.menuLastX + distanceX + "px";
             ayMenu.style.top = this.menuLastY + distanceY + "px";
         },
-        checkPassword() {
-            if (this.password === this.correctPassword) {
-                this.isPasswordCorrect = true;
-                // Lưu mật khẩu vào localStorage
-                localStorage.setItem("savedPassword", this.password);
-                // Sau khi mật khẩu đúng, ẩn phần nhập mật khẩu
-                this.password = ""; // Xóa giá trị mật khẩu để ngăn việc hiển thị nó lại khi quay lại màn hình
-            } else {
-                alert("Mật khẩu không đúng!");
-                this.currentAttempt++;
-            }
-        },
-        copyLink() {
-            const url = "https://www.youtube.com/watch?v=3qrxSseq958";
-            navigator.clipboard.writeText(url).then(() => {
-                alert('Link copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy link: ', err);
-            });
-        },
-
         //切换导航栏
         changeTab(v) {
             this.tabValue = v;
