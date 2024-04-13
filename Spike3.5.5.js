@@ -3,7 +3,7 @@
   data() {
     return {
       password: localStorage.getItem("savePassword") || "",
-     correctPassword:"9999",
+      permittedPasswords: ["123"],
       isPasswordCorrect: false,
       maxUsers: 999999999,
       currentUsers: 1,
@@ -101,7 +101,7 @@
   }
 });
   function linkpass() {
-    window.location.href = "https://www.youtube.com/watch?v=3qrxSseq958";
+    window.location.href = "https://web1s.org/QOav03jzmX";
 }
         
         function Buffchiso() {
