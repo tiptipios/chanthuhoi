@@ -113,8 +113,7 @@
         resetAttempts() {
             this.currentAttempt = 0;
         }
-    }
-});
+    },
                 //切换导航栏
                 changeTab(v) {
                     this.tabValue = v;
