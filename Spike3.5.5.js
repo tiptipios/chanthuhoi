@@ -2,10 +2,14 @@
             el: "#app",
             data() {
                 return {
-                    password: localStorage.getItem("savedPassword") || "", // Sử dụng localStorage để lưu mật khẩu
-            correctPassword: "9999", // Đặt mật khẩu của bạn ở đây
-            isPasswordCorrect: false, // Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
-                    ifshow: true,
+                  password: "",
+            permittedPasswords: ["123"],
+            isPasswordCorrect: false,
+            maxUsers: 1, // Số lượng người dùng tối đa được phép
+            currentUsers: 0, // Số lượng người dùng hiện tại// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
+               maxAttempts: 5,
+            currentAttempt: 0,
+                   ifshow: true,
                     checked: false,
                     radio: '1',
                     activeSelect: '',
@@ -83,17 +87,34 @@
                     ayMenu.style.left = this.menuLastX + distanceX + "px";
                     ayMenu.style.top = this.menuLastY + distanceY + "px";
                 },
-                checkPassword() {
-            if (this.password === this.correctPassword) {
+          checkPassword() {
+            if (this.currentAttempt >= this.maxAttempts) {
+                alert("Bạn đã nhập sai mật khẩu quá số lần cho phép!");
+                return;
+            }
+
+            // Kiểm tra xem số lượng người dùng đã đạt đến giới hạn chưa
+            if (this.currentUsers >= this.maxUsers) {
+                alert("Số lượng người dùng đã đạt đến giới hạn. Không thể thêm người dùng mới.");
+                return;
+            }
+
+            if (this.permittedPasswords.includes(this.password)) {
                 this.isPasswordCorrect = true;
-                // Lưu mật khẩu vào localStorage
-                localStorage.setItem("savedPassword", this.password);
-                // Sau khi mật khẩu đúng, ẩn phần nhập mật khẩu
-                this.password = ""; // Xóa giá trị mật khẩu để ngăn việc hiển thị nó lại khi quay lại màn hình
+                // Nếu mật khẩu đúng và số lượng người dùng chưa đạt đến giới hạn, tăng số lượng người dùng
+                if (this.currentUsers < this.maxUsers) {
+                    this.currentUsers++;
+                }
             } else {
                 alert("Mật khẩu không đúng!");
+                this.currentAttempt++;
             }
         },
+        resetAttempts() {
+            this.currentAttempt = 0;
+        }
+    }
+});
                 //切换导航栏
                 changeTab(v) {
                     this.tabValue = v;
