@@ -1,129 +1,106 @@
-   var app = new Vue({
-            el: "#app",
-            data() {
-                return {
-                  password: "",
-            permittedPasswords: ["123"],
-            isPasswordCorrect: false,
-            maxUsers: 1, // Số lượng người dùng tối đa được phép
-            currentUsers: 0, // Số lượng người dùng hiện tại// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
-               maxAttempts: 5,
-            currentAttempt: 0,
-                   ifshow: true,
-                    checked: false,
-                    radio: '1',
-                    activeSelect: '',
-                    selectOption: [{
-                        value: '0%', //实际内容
-                        label: '0%'//显示文案
-                    }, {
-                        value: '50%',
-                        label: '50%'
-                    }, {
-                        value: '100%',
-                        label: '100%'
-                    }],
-                    input: "",
-                    showOption: false,
-                    tabValue: "one",
-                }
-            },
-            mounted() {
-                this.setRect(360, 320);
+ var app = new Vue({
+  el: "#app",
+  data() {
+    return {
+      password: "",
+      permittedPasswords: ["123"],
+      isPasswordCorrect: false,
+      maxUsers: 1,
+      currentUsers: 0,
+      maxAttempts: 5,
+      currentAttempt: 0,
+      ifshow: true,
+      checked: false,
+      radio: '1',
+      activeSelect: '',
+      selectOption: [
+        { value: '0%', label: '0%' },
+        { value: '50%', label: '50%' },
+        { value: '100%', label: '100%' }
+      ],
+      input: "",
+      showOption: false,
+      tabValue: "one",
+      touchStartX: 0,
+      touchStartY: 0,
+      menuLastX: 0,
+      menuLastY: 0,
+    };
+  },
+  mounted() {
+    this.setRect(360, 320);
 
-                //竖屏
-                var sWidth = window.screen.width; //屏幕宽
-                var sHeight = window.screen.height; //屏幕高
+    let sWidth = window.screen.availWidth;
+    let sHeight = window.screen.availHeight;
 
-                //全屏显示
-                if (window.screen.availWidth > window.screen.availHeight) {
-                    //横屏，宽高置换
-                    sWidth = window.screen.height; //屏幕宽
-                    sHeight = window.screen.width; //屏幕高
-                }
-                setWindowRect(0, 0, sWidth, sHeight);
-
-                setButtonAction(function () {
-                    var menu = document.querySelector("#app");
-                    if (menu.style.display == 'none') {
-                        menu.style.display = 'block';
-                        //显示菜单之后, 设置触控不可穿透悬浮窗口
-                        setWindowTouch(true);
-                    } else {
-                        menu.style.display = 'none';
-                        //隐藏菜单之后, 设置触控穿透悬浮窗口
-                        setWindowTouch(false);
-                    }
-                });
-            },
-            methods: {
-                setRect(w,
-                    h,
-                    x = -1,
-                    y = -1) {
-                    var boxW = w;
-                    var boxH = h;
-
-                    var ayMenu = this.$refs.menuMain;
-                    ayMenu.style.width = `${boxW}px`;
-                    ayMenu.style.height = `${boxH}px`;
-                    if (x == -1) ayMenu.style.left = `calc(50% - ${boxW / 2}px)`;
-                    if (y == -1) ayMenu.style.top = `calc(50% - ${boxH / 2}px)`;
-                },
-                titleTouchStart(event) {
-                    this.touchStartX = parseInt(event.touches[0].clientX);
-                    this.touchStartY = parseInt(event.touches[0].clientY);
-
-                    var ayMenu = this.$refs.menuMain;
-                    this.menuLastX = ayMenu.offsetLeft;
-                    this.menuLastY = ayMenu.offsetTop;
-                },
-                titleTouchMove(event) {
-                    event.preventDefault();
-                    var distanceX = event.touches[0].clientX - this.touchStartX;
-                    var distanceY = event.touches[0].clientY - this.touchStartY;
-
-                    var ayMenu = this.$refs.menuMain;
-                    ayMenu.style.left = this.menuLastX + distanceX + "px";
-                    ayMenu.style.top = this.menuLastY + distanceY + "px";
-                },
-          checkPassword() {
-            if (this.currentAttempt >= this.maxAttempts) {
-                alert("Bạn đã nhập sai mật khẩu quá số lần cho phép!");
-                return;
-            }
-
-            // Kiểm tra xem số lượng người dùng đã đạt đến giới hạn chưa
-            if (this.currentUsers >= this.maxUsers) {
-                alert("Số lượng người dùng đã đạt đến giới hạn. Không thể thêm người dùng mới.");
-                return;
-            }
-
-            if (this.permittedPasswords.includes(this.password)) {
-                this.isPasswordCorrect = true;
-                // Nếu mật khẩu đúng và số lượng người dùng chưa đạt đến giới hạn, tăng số lượng người dùng
-                if (this.currentUsers < this.maxUsers) {
-                    this.currentUsers++;
-                }
-            } else {
-                alert("Mật khẩu không đúng!");
-                this.currentAttempt++;
-            }
-        },
-        resetAttempts() {
-            this.currentAttempt = 0;
-        }
+    if (sWidth > sHeight) {
+      // If landscape, swap dimensions
+      [sWidth, sHeight] = [sHeight, sWidth];
+    }
+    this.setWindowRect(0, 0, sWidth, sHeight);
+    this.setButtonAction();
+  },
+  methods: {
+    setRect(w, h, x = -1, y = -1) {
+      const ayMenu = this.$refs.menuMain;
+      ayMenu.style.width = `${w}px`;
+      ayMenu.style.height = `${h}px`;
+      if (x === -1) ayMenu.style.left = `calc(50% - ${w / 2}px)`;
+      if (y === -1) ayMenu.style.top = `calc(50% - ${h / 2}px)`;
     },
-                //切换导航栏
-                changeTab(v) {
-                    this.tabValue = v;
-                },
-                closeimgui() {
-                    var menu = document.querySelector("#app");
-                    menu.style.display = 'none';
-                }
-            }
-        });
+    titleTouchStart(event) {
+      this.touchStartX = event.touches[0].clientX;
+      this.touchStartY = event.touches[0].clientY;
+      const ayMenu = this.$refs.menuMain;
+      this.menuLastX = ayMenu.offsetLeft;
+      this.menuLastY = ayMenu.offsetTop;
+    },
+    titleTouchMove(event) {
+      event.preventDefault();
+      const distanceX = event.touches[0].clientX - this.touchStartX;
+      const distanceY = event.touches[0].clientY - this.touchStartY;
+      const ayMenu = this.$refs.menuMain;
+      ayMenu.style.left = `${this.menuLastX + distanceX}px`;
+      ayMenu.style.top = `${this.menuLastY + distanceY}px`;
+    },
+    checkPassword() {
+      if (this.currentAttempt >= this.maxAttempts) {
+        alert("Bạn đã nhập sai mật khẩu quá số lần cho phép!");
+        return;
+      }
+
+      if (this.currentUsers >= this.maxUsers) {
+        alert("Số lượng người dùng đã đạt đến giới hạn. Không thể thêm người dùng mới.");
+        return;
+      }
+
+      if (this.permittedPasswords.includes(this.password)) {
+        this.isPasswordCorrect = true;
+        this.currentUsers++;
+      } else {
+        alert("Mật khẩu không đúng!");
+        this.currentAttempt++;
+      }
+    },
+    resetAttempts() {
+      this.currentAttempt = 0;
+    },
+    setWindowRect(x, y, w, h) {
+      // Function to adjust window size and position (implementation depends on specific platform APIs)
+    },
+    setButtonAction() {
+      // Attach event handlers or actions to buttons (implementation details need clarification)
+    },
+    changeTab(v) {
+      this.tabValue = v;
+    },
+    closeimgui() {
+      var menu = document.querySelector("#app");
+      menu.style.display = 'none';
+    }
+  }
+});
+
         
         function Buffchiso() {
     var searchValue = -2079391644; // Chi so 100
