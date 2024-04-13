@@ -3,7 +3,7 @@
             data() {
                 return {
                     password: localStorage.getItem("savedPassword") || "", // Sử dụng localStorage để lưu mật khẩu
-            correctPassword: "6666", // Đặt mật khẩu của bạn ở đây
+            correctPassword: "9999", // Đặt mật khẩu của bạn ở đây
             isPasswordCorrect: false, // Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
                     ifshow: true,
                     checked: false,
