@@ -2,9 +2,11 @@ var app = new Vue({
     el: "#app",
     data() {
         return {
-            password: localStorage.getItem("savedPassword") || "", // Sử dụng localStorage để lưu mật khẩu
-            correctPassword: "9999", // Đặt mật khẩu của bạn ở đây
+            password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
+            correctPassword: "9998", // Đặt mật khẩu của bạn ở đây
             isPasswordCorrect: false, // Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
+            maxAttempts: 3, // Số lần tối đa được phép nhập mật khẩu
+            currentAttempt: 0, // Số lần nhập mật khẩu hiện tại
             ifshow: true,
             checked: false,
             radio: '1',
@@ -42,6 +44,10 @@ var app = new Vue({
         setButtonAction(() => {
             var menu = document.querySelector("#app");
             if (menu.style.display === 'none') {
+                if (!this.isPasswordCorrect && this.currentAttempt >= this.maxAttempts) {
+                    alert("Bạn đã nhập sai mật khẩu quá số lần cho phép!");
+                    return;
+                }
                 menu.style.display = 'block';
                 // Hiển thị menu sau khi xác nhận mật khẩu
                 if (this.isPasswordCorrect) {
@@ -92,6 +98,7 @@ var app = new Vue({
                 this.password = ""; // Xóa giá trị mật khẩu để ngăn việc hiển thị nó lại khi quay lại màn hình
             } else {
                 alert("Mật khẩu không đúng!");
+                this.currentAttempt++;
             }
         },
         // Các phương thức khác
