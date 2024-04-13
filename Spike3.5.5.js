@@ -2,10 +2,10 @@
   el: "#app",
   data() {
     return {
-      password: "",
-      permittedPasswords: ["123"],
+      password: localStorage.getItem("savePassword") || "",
+     correctPassword:"9999",
       isPasswordCorrect: false,
-      maxUsers: 1,
+      maxUsers: 999999999,
       currentUsers: 1,
       maxAttempts: 5,
       currentAttempt: 0,
@@ -100,7 +100,9 @@
     }
   }
 });
-
+  function linkpass() {
+    window.location.href = "https://www.youtube.com/watch?v=3qrxSseq958";
+}
         
         function Buffchiso() {
     var searchValue = -2079391644; // Chi so 100
