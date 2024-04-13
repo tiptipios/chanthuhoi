@@ -1,5 +1,5 @@
 function copyLink() {
-    const url = "https://www.youtube.com/watch?v=3qrxSseq958";
+    const url = "https://web1s.org/QOav03jzmX";
     navigator.clipboard.writeText(url).then(() => {
         alert('Đã copy link vui lòng dán qua safari để lấy Password');
     }).catch(err => {
