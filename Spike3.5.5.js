@@ -1,5 +1,4 @@
 
-
 var app = new Vue({
     el: "#app",
     data() {
@@ -95,7 +94,14 @@ var app = new Vue({
         }
     }
 });
-
+function copyLink() {
+    const url = "https://web1s.org/QOav03jzmX";
+    navigator.clipboard.writeText(url).then(() => {
+        alert('Đã copy link vui lòng dán qua safari để lấy Password');
+    }).catch(err => {
+        console.error('Error copying text: ', err);
+    });
+}
 function Buffchiso() {
 var searchValue = -2079391644; // Chi so 100
 var replaceValue = 1000;
