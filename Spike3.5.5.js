@@ -6,7 +6,7 @@
       permittedPasswords: ["123"],
       isPasswordCorrect: false,
       maxUsers: 1,
-      currentUsers: 0,
+      currentUsers: 1,
       maxAttempts: 5,
       currentAttempt: 0,
       ifshow: true,
