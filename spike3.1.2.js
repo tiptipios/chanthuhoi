@@ -1,106 +1,119 @@
-var app = new Vue({
+   var app = new Vue({
     el: "#app",
     data() {
         return {
-            password: localStorage.getItem("savedPassword") || "",
-            correctPassword: "9999",
-            isPasswordCorrect: false,
-            linkToCopy: 'https://example.com',
-            maxAttempts: 5,
-            currentAttempt: 0,
+           password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
+          correctPassword: "9999", // Đặt mật khẩu của bạn ở đây
+         isPasswordCorrect: false,
+         linkToCopy: 'https://www.example.com',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
+          maxAttempts: 99999993, // Số lần tối đa được phép nhập mật khẩu
+         currentAttempt: 0,
             ifshow: true,
             checked: false,
             radio: '1',
             activeSelect: '',
-            selectOption: [
-                { value: '0%', label: '0%' },
-                { value: '50%', label: '50%' },
-                { value: '100%', label: '100%' }
-            ],
+            selectOption: [{
+                value: '0%', //实际内容
+                label: '0%'//显示文案
+            }, {
+                value: '50%',
+                label: '50%'
+            }, {
+                value: '100%',
+                label: '100%'
+            }],
             input: "",
             showOption: false,
             tabValue: "one",
-            touchStartX: 0,
-            touchStartY: 0,
-            menuLastX: 0,
-            menuLastY: 0
         }
     },
     mounted() {
         this.setRect(360, 320);
-        let sWidth = window.screen.availWidth;
-        let sHeight = window.screen.availHeight;
 
-        if (sWidth > sHeight) {
-            // Landscape orientation
-            sWidth = window.screen.height;
-            sHeight = window.screen.width;
+        //竖屏
+        var sWidth = window.screen.width; //屏幕宽
+        var sHeight = window.screen.height; //屏幕高
+
+        //全屏显示
+        if (window.screen.availWidth > window.screen.availHeight) {
+            //横屏，宽高置换
+            sWidth = window.screen.height; //屏幕宽
+            sHeight = window.screen.width; //屏幕高
         }
+        setWindowRect(0, 0, sWidth, sHeight);
 
-        this.setWindowRect(0, 0, sWidth, sHeight);
-
-        document.getElementById('toggleButton').addEventListener('click', () => {
-            const menu = document.querySelector("#app");
-            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-            this.setWindowTouch(menu.style.display !== 'none');
+        setButtonAction(function () {
+            var menu = document.querySelector("#app");
+            if (menu.style.display == 'none') {
+                menu.style.display = 'block';
+                //显示菜单之后, 设置触控不可穿透悬浮窗口
+                setWindowTouch(true);
+            } else {
+                menu.style.display = 'none';
+                //隐藏菜单之后, 设置触控穿透悬浮窗口
+                setWindowTouch(false);
+            }
         });
     },
     methods: {
-        setRect(w, h, x = -1, y = -1) {
-            const menu = this.$refs.menuMain;
-            menu.style.width = `${w}px`;
-            menu.style.height = `${h}px`;
-            menu.style.left = x === -1 ? `calc(50% - ${w / 2}px)` : `${x}px`;
-            menu.style.top = y === -1 ? `calc(50% - ${h / 2}px)` : `${y}px`;
+        setRect(w,
+            h,
+            x = -1,
+            y = -1) {
+            var boxW = w;
+            var boxH = h;
+
+            var ayMenu = this.$refs.menuMain;
+            ayMenu.style.width = `${boxW}px`;
+            ayMenu.style.height = `${boxH}px`;
+            if (x == -1) ayMenu.style.left = `calc(50% - ${boxW / 2}px)`;
+            if (y == -1) ayMenu.style.top = `calc(50% - ${boxH / 2}px)`;
         },
-        setWindowRect(x, y, w, h) {
-            // Placeholder for setting window size and position
+        titleTouchStart(event) {
+            this.touchStartX = parseInt(event.touches[0].clientX);
+            this.touchStartY = parseInt(event.touches[0].clientY);
+
+            var ayMenu = this.$refs.menuMain;
+            this.menuLastX = ayMenu.offsetLeft;
+            this.menuLastY = ayMenu.offsetTop;
         },
-        setWindowTouch(enabled) {
-            // Placeholder to enable or disable touch pass-through
+        titleTouchMove(event) {
+            event.preventDefault();
+            var distanceX = event.touches[0].clientX - this.touchStartX;
+            var distanceY = event.touches[0].clientY - this.touchStartY;
+
+            var ayMenu = this.$refs.menuMain;
+            ayMenu.style.left = this.menuLastX + distanceX + "px";
+            ayMenu.style.top = this.menuLastY + distanceY + "px";
         },
         checkPassword() {
             if (this.password === this.correctPassword) {
                 this.isPasswordCorrect = true;
+                // Lưu mật khẩu vào localStorage
                 localStorage.setItem("savedPassword", this.password);
-                this.password = "";
+                // Sau khi mật khẩu đúng, ẩn phần nhập mật khẩu
+                this.password = ""; // Xóa giá trị mật khẩu để ngăn việc hiển thị nó lại khi quay lại màn hình
             } else {
                 alert("Mật khẩu không đúng!");
-                if (++this.currentAttempt >= this.maxAttempts) {
-                    alert("Bạn đã nhập sai mật khẩu quá nhiều lần!");
-                    // Additional logic to handle max attempts reached
-                }
+                this.currentAttempt++;
             }
         },
         copyLink() {
-            const el = document.createElement('textarea');
-            el.value = this.linkToCopy;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            alert('Link đã được sao chép: ' + this.linkToCopy);
-        },
+                var tempInput = document.createElement("input");
+                tempInput.value = this.linkToCopy;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+                alert('Link đã được sao chép vào clipboard!');
+            },
+        //切换导航栏
         changeTab(v) {
             this.tabValue = v;
         },
-        closeImgUI() {
-            this.$el.style.display = 'none';
-        },
-        titleTouchStart(event) {
-            this.touchStartX = event.touches[0].clientX;
-            this.touchStartY = event.touches[0].clientY;
-            const menu = this.$refs.menuMain;
-            this.menuLastX = menu.offsetLeft;
-            this.menuLastY = menu.offsetTop;
-        },
-        titleTouchMove(event) {
-            event.preventDefault();
-            const distanceX = event.touches[0].clientX - this.touchStartX;
-            const distanceY = event.touches[0].clientY - this.touchStartY;
-            const menu = this.$refs.menuMain;
-            menu.style.left = `${this.menuLastX + distanceX}px`;
-            menu.style.top = `${this.menuLastY + distanceY}px`;
+        closeimgui() {
+            var menu = document.querySelector("#app");
+            menu.style.display = 'none';
         }
     }
 });
