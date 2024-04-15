@@ -1,13 +1,13 @@
-
 var app = new Vue({
     el: "#app",
     data() {
         return {
-            password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
-            correctPassword: "9999", // Đặt mật khẩu của bạn ở đây
-            isPasswordCorrect: false, // Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
-            maxAttempts: 99999993, // Số lần tối đa được phép nhập mật khẩu
-            currentAttempt: 0, // Số lần nhập mật khẩu hiện tại
+            password: localStorage.getItem("savedPassword") || "",
+            correctPassword: "TikTok:TipTip",
+            isPasswordCorrect: false,
+            linkToCopy: 'https://web1s.org/XsLWMJXGP7',
+            maxAttempts: 5,
+            currentAttempt: 0,
             ifshow: true,
             checked: false,
             radio: '1',
@@ -23,74 +23,84 @@ var app = new Vue({
             touchStartX: 0,
             touchStartY: 0,
             menuLastX: 0,
-            menuLastY: 0,
-            currentAttempt: 0,
-            maxAttempts: 5,
-            currentUsers: 0,
-            maxUsers: 10
-        };
+            menuLastY: 0
+        }
     },
     mounted() {
-        const rememberedPassword = localStorage.getItem('rememberedPassword');
-        if (rememberedPassword) {
-            this.password = rememberedPassword;
-            this.rememberMe = true;
-        }
         this.setRect(360, 320);
-
         let sWidth = window.screen.availWidth;
         let sHeight = window.screen.availHeight;
 
         if (sWidth > sHeight) {
-            [sWidth, sHeight] = [sHeight, sWidth];
+            // Landscape orientation
+            sWidth = window.screen.height;
+            sHeight = window.screen.width;
         }
+
         this.setWindowRect(0, 0, sWidth, sHeight);
-        this.setButtonAction();
+
+        document.getElementById('toggleButton').addEventListener('click', () => {
+            const menu = document.querySelector("#app");
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+            this.setWindowTouch(menu.style.display !== 'none');
+        });
     },
     methods: {
         setRect(w, h, x = -1, y = -1) {
-            const ayMenu = this.$refs.menuMain;
-            ayMenu.style.width = `${w}px`;
-            ayMenu.style.height = `${h}px`;
-            if (x === -1) ayMenu.style.left = `calc(50% - ${w / 2}px)`;
-            if (y === -1) ayMenu.style.top = `calc(50% - ${h / 2}px)`;
+            const menu = this.$refs.menuMain;
+            menu.style.width = `${w}px`;
+            menu.style.height = `${h}px`;
+            menu.style.left = x === -1 ? `calc(50% - ${w / 2}px)` : `${x}px`;
+            menu.style.top = y === -1 ? `calc(50% - ${h / 2}px)` : `${y}px`;
+        },
+        setWindowRect(x, y, w, h) {
+            // Placeholder for setting window size and position
+        },
+        setWindowTouch(enabled) {
+            // Placeholder to enable or disable touch pass-through
+        },
+        checkPassword() {
+            if (this.password === this.correctPassword) {
+                this.isPasswordCorrect = true;
+                localStorage.setItem("savedPassword", this.password);
+                this.password = "";
+            } else {
+                alert("Mật khẩu không đúng!");
+                if (++this.currentAttempt >= this.maxAttempts) {
+                    alert("Bạn đã nhập sai mật khẩu quá nhiều lần!");
+                    // Additional logic to handle max attempts reached
+                }
+            }
+        },
+        copyLink() {
+            const el = document.createElement('textarea');
+            el.value = this.linkToCopy;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            alert('Link đã được sao chép: ' + this.linkToCopy);
+        },
+        changeTab(v) {
+            this.tabValue = v;
+        },
+        closeImgUI() {
+            this.$el.style.display = 'none';
         },
         titleTouchStart(event) {
             this.touchStartX = event.touches[0].clientX;
             this.touchStartY = event.touches[0].clientY;
-            const ayMenu = this.$refs.menuMain;
-            this.menuLastX = ayMenu.offsetLeft;
-            this.menuLastY = ayMenu.offsetTop;
+            const menu = this.$refs.menuMain;
+            this.menuLastX = menu.offsetLeft;
+            this.menuLastY = menu.offsetTop;
         },
         titleTouchMove(event) {
             event.preventDefault();
             const distanceX = event.touches[0].clientX - this.touchStartX;
             const distanceY = event.touches[0].clientY - this.touchStartY;
-            const ayMenu = this.$refs.menuMain;
-            ayMenu.style.left = `${this.menuLastX + distanceX}px`;
-            ayMenu.style.top = `${this.menuLastY + distanceY}px`;
-        },
-        checkPassword() {
-            if (this.password === this.correctPassword) {
-                this.isPasswordCorrect = true;
-                // Lưu mật khẩu vào localStorage
-                localStorage.setItem("savedPassword", this.password);
-                // Sau khi mật khẩu đúng, ẩn phần nhập mật khẩu
-                this.password = ""; // Xóa giá trị mật khẩu để ngăn việc hiển thị nó lại khi quay lại màn hình
-            } else {
-                alert("Mật khẩu không đúng!");
-                this.currentAttempt++;
-            }
-        },
-        setWindowRect(x, y, w, h) {
-            // Function to adjust window size and position (implementation depends on specific platform APIs)
-        },
-        setButtonAction() {
-            // Attach event handlers or actions to buttons (implementation details need clarification)
-        },
-        closeimgui() {
-            var menu = document.querySelector("#app");
-            menu.style.display = 'none';
+            const menu = this.$refs.menuMain;
+            menu.style.left = `${this.menuLastX + distanceX}px`;
+            menu.style.top = `${this.menuLastY + distanceY}px`;
         }
     }
 });
