@@ -3,7 +3,7 @@
     data() {
         return {
            password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
-          correctPassword: "Vip9999", // Đặt mật khẩu của bạn ở đây
+          correctPassword: "tml9999", // Đặt mật khẩu của bạn ở đây
          isPasswordCorrect: false,
          linkToCopy: 'https://t.me/gamemodios',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
           maxAttempts: 99999993, // Số lần tối đa được phép nhập mật khẩu
