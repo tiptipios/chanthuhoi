@@ -3,9 +3,9 @@
     data() {
         return {
            password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
-          correctPassword: "998876", // Đặt mật khẩu của bạn ở đây
+          correctPassword: "TipTip9999", // Đặt mật khẩu của bạn ở đây
          isPasswordCorrect: false,
-         linkToCopy: 'https://web1s.org/EajTsESUgr',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
+         linkToCopy: 'https://web1s.org/rVBo98m7xo',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
           maxAttempts: 99999993, // Số lần tối đa được phép nhập mật khẩu
          currentAttempt: 0,
             ifshow: true,
@@ -94,7 +94,7 @@
                 // Sau khi mật khẩu đúng, ẩn phần nhập mật khẩu
                 this.password = ""; // Xóa giá trị mật khẩu để ngăn việc hiển thị nó lại khi quay lại màn hình
             } else {
-                alert("Mật khẩu không đúng!");
+                alert("Mật khẩu đã thay đổi hãy lấy pass mới!");
                 this.currentAttempt++;
             }
         },
