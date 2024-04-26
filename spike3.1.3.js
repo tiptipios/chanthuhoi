@@ -3,9 +3,9 @@
     data() {
         return {
            password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
-          correctPassword: "TikTok:TipTip", // Đặt mật khẩu của bạn ở đây
+          correctPassword: "9876543210", // Đặt mật khẩu của bạn ở đây
          isPasswordCorrect: false,
-         linkToCopy: 'https://web1s.org/Gf4IwtVL4Z',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
+         linkToCopy: 'https://web1s.org/kECx8Jr4VT',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
           maxAttempts: 99999993, // Số lần tối đa được phép nhập mật khẩu
          currentAttempt: 0,
             ifshow: true,
