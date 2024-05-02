@@ -94,7 +94,7 @@
                 // Sau khi mật khẩu đúng, ẩn phần nhập mật khẩu
                 this.password = ""; // Xóa giá trị mật khẩu để ngăn việc hiển thị nó lại khi quay lại màn hình
             } else {
-                alert("Mật khẩu không đúng!");
+                alert("Bạn đã nhập sai pass hoặc pass đã được thay đổi, Hãy bấm Lấy Pass để lấy Pass mới!");
                 this.currentAttempt++;
             }
         },
@@ -105,7 +105,7 @@
                 tempInput.select();
                 document.execCommand("copy");
                 document.body.removeChild(tempInput);
-                alert('Link đã được sao chép vào clipboard!');
+                alert('Link đã được sao chép, Dán qua Safari vượt để lấy Pass !');
             },
         //切换导航栏
         changeTab(v) {
