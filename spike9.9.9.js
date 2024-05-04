@@ -94,7 +94,7 @@
                 // Sau khi mật khẩu đúng, ẩn phần nhập mật khẩu
                 this.password = ""; // Xóa giá trị mật khẩu để ngăn việc hiển thị nó lại khi quay lại màn hình
             } else {
-                alert("Bạn đã nhập sai pass hoặc pass đã được thay đổi, Hãy bấm Lấy Pass để lấy Pass mới!");
+                alert("Bạn đã nhập sai pass hoặc pass đã được thay đổi, Hãy bấm get key để lấy Pass mới!");
                 this.currentAttempt++;
             }
         },
