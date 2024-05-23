@@ -1,9 +1,9 @@
-   var app = new Vue({
+var app = new Vue({
     el: "#app",
     data() {
         return {
            password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
-          correctPassword: "Vip8888", // Đặt mật khẩu của bạn ở đây
+          correctPassword: "Vip6868", // Đặt mật khẩu của bạn ở đây
          isPasswordCorrect: false,
          linkToCopy: 'https://t.me/gamemodios',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
           maxAttempts: 99999993, // Số lần tối đa được phép nhập mật khẩu
@@ -23,6 +23,9 @@
                 label: '100%'
             }],
             input: "",
+            showOption1: false,
+            showOption2: false,
+
             showOption: false,
             tabValue: "one",
         }
