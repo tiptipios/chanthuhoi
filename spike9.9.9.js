@@ -3,9 +3,9 @@
     data() {
         return {
            password: localStorage.getItem("savedPassword") || "", // Lấy mật khẩu từ localStorage nếu có
-          correctPassword: "TipTip9999", // Đặt mật khẩu của bạn ở đây
+          correctPassword: "TipTip66666", // Đặt mật khẩu của bạn ở đây
          isPasswordCorrect: false,
-         linkToCopy: 'https://1mlink.vip/q5zxm',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
+         linkToCopy: 'https://1mlink.vip/R7uKSWeA',// Thêm thuộc tính để kiểm tra xem mật khẩu có đúng không
           maxAttempts: 99999993, // Số lần tối đa được phép nhập mật khẩu
          currentAttempt: 0,
             ifshow: true,
