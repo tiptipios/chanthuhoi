@@ -23,7 +23,10 @@
                 label: '100%'
             }],
             input: "",
+            showOption1: false,
             showOption: false,
+         
+            showOption2: false,
             tabValue: "one",
         }
     },
