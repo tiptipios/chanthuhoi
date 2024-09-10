@@ -134,7 +134,7 @@ function tipAimCope() {
                     changeSpeed('4397530849764387586', '4397530849764387586');
                 }
                 function tipspeed30x() {
-                    changeSpeed('4366548720915388653', '4366548720915388653');
+                    changeSpeed('4366458311853786803', '4366458311853786803');
                 }
                 
                 function tipBuffdame() {
