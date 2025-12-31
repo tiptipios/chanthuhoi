@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="description"
+        content="The Spike Ver 4 - Game bóng chuyền mod với tính năng hack độc đáo. FREE và VIP versions.">
+    <meta name="keywords" content="The Spike, mod game, hack game, bóng chuyền, iOS, Android">
+    <title>The Spike Ver 4 - Mod Game</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: url('https://www.thespikecross.com/images/thespike.png') center center/cover no-repeat fixed;
+            background-color: #1a1a2e;
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            z-index: 1001;
+            transition: width 0.3s ease;
+        }
+
+        /* Bỏ navbar - không cần thiết */
+
+        .hero {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .version-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-right: 1rem;
+        }
+
+        .free-card .card-icon {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+        }
+
+        .vip1-card .card-icon {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+        }
+
+        .vip2-card .card-icon {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .card-subtitle {
+            color: #a19d9d;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 1.5rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-list li {
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: center;
+            color: #1f2937;
+            background: rgba(255, 255, 255, 0.12);
+            margin-bottom: 0.8rem;
+            border-radius: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+
+        .feature-list li:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-list li:active {
+            transform: translateY(0);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #34d399, #10b981);
+            border-radius: 50%;
+            margin-right: 1.2rem;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .pricing-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 3rem 2rem;
+            margin: 4rem 0;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .price-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .price-card.popular {
+            border: 3px solid #667eea;
+            transform: scale(1.05);
+        }
+
+        .price-card.popular::before {
+            content: 'PHỔ BIẾN';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .price-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .price-period {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-button {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 222, 128, 0.4);
+        }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .info-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-card h3 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .info-card p {
+            color: #d0cccc;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .hero {
+                padding: 3rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+                line-height: 1.2;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 1rem;
+            }
+
+            .card-icon {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+
+            .feature-list {
+                padding: 0.75rem;
+            }
+
+            .feature-list li {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .pricing-section {
+                padding: 2rem 1rem;
+                margin: 2rem 0;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .price-card {
+                padding: 1.5rem;
+            }
+
+            .price-card.popular {
+                transform: none;
+                margin-bottom: 1rem;
+            }
+
+            .price-card.popular::before {
+                top: -12px;
+                font-size: 0.75rem;
+                padding: 0.4rem 1rem;
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin: 2rem 0;
+            }
+
+            .info-card {
+                padding: 1.5rem;
+            }
+
+            .info-card h3 {
+                font-size: 1.1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .cta-button,
+            .download-button {
+                width: 100%;
+                text-align: center;
+                padding: 1rem;
+                font-size: 1rem;
+            }
+
+            .footer {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .version-badge {
+                padding: 0.4rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .feature-card {
+                padding: 1rem;
+            }
+
+            .card-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .price-card {
+                padding: 1rem;
+            }
+
+            .price-amount {
+                font-size: 2rem;
+            }
+
+            .info-card {
+                padding: 1rem;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .feature-card:hover {
+                transform: none;
+            }
+
+            .price-card:hover {
+                transform: none;
+            }
+
+            .cta-button:hover,
+            .download-button:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            .nav-links a:hover {
+                color: #333;
+            }
+        }
+
+        /* Mobile navigation */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 0.5rem 0;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 0.75rem;
+                text-align: center;
+                border-radius: 8px;
+                transition: background-color 0.3s;
+            }
+
+            .nav-links a:hover {
+                background-color: rgba(102, 126, 234, 0.1);
+            }
+
+            .navbar {
+                padding: 0.75rem 0;
+            }
+
+            .nav-container {
+                position: relative;
+            }
+
+            .feature-card .cta-button,
+            .feature-card .download-button {
+                margin-top: 1.5rem;
+            }
+
+            .price-card .cta-button,
+            .price-card .download-button {
+                margin-top: 1.5rem;
+            }
+        }
+
+        /* Enhanced animations */
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .animate-slide-left {
+            animation: slideInFromLeft 0.8s ease-out;
+        }
+
+        .animate-slide-right {
+            animation: slideInFromRight 0.8s ease-out;
+        }
+
+        .animate-bounce {
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        /* Floating elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Enhanced feature cards */
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .feature-card:hover::after {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Notification system */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1002;
+            border-left: 4px solid #4ade80;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <button class="close-btn" onclick="closeNotification()">&times;</button>
+        <div id="notificationText">Chào mừng đến với The Spike Mod!</div>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <div class="version-badge">Version 6.5.104</div>
+            <h3> Tip Tip </h3>
+            <h1> The Spike Cross V4 </h1>
+            <p>Trải nghiệm game bóng chuyền với những tính năng mod độc đáo và mạnh mẽ</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <section id="features" class="section">
+            <h2 class="section-title"> Chức Năng Hack</h2>
+            <div class="features-grid">
+                <div class="feature-card free-card fade-in">
+                    <div class="card-header">
+                        <div class="card-icon">🤤</div>
+                        <div>
+                            <h3 class="card-title">FREE</h3>
+                            <p class="card-subtitle">🆓 Không cần duyệt</p>
+                        </div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>
+                            <div class="tooltip">
+                                Mod Nhân Vật WS
+                                <span class="tooltiptext">Mod nhân vật WS </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Không hồi chiêu V1
+                                <span class="tooltiptext">Sử dụng skill liên tục không cần chờ</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                No Ads
+                                <span class="tooltiptext">Loại bỏ hoàn toàn quảng cáo</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Cài song song bản gốc
+                                <span class="tooltiptext">Có thể cài cùng lúc với bản chính thức</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="feature-card vip1-card fade-in">
+                    <div class="card-header">
+                        <div class="card-icon">👑</div>
+                        <div>
+                            <h3 class="card-title">VIP 1</h3>
+                            <p class="card-subtitle">💵 <span
+                                    style="font-size: 1.2rem; font-weight: 700; color: #f59e0b;">60k/tháng</span></p>
+                        </div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>
+                            <div class="tooltip">
+                                Mod All Nhân Vật/Skin tuỳ chọn
+                                <span class="tooltiptext">Mở khóa tất cả nhân vật và skin, tùy chỉnh theo ý muốn</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Buff Chỉ số Nhân vật tuỳ chỉnh
+                                <span class="tooltiptext">Tăng sức mạnh, tốc độ, phòng thủ, sức bật theo ý muốn</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Mod Skin ball
+                                <span class="tooltiptext">unlock Skin bóng</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Mod Map
+                                <span class="tooltiptext">tùy chỉnh tất cả sân đấu</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Unlimited Effect
+                                <span class="tooltiptext">Hiệu ứng đặc biệt không giới hạn</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Unlock Skill AI
+                                <span class="tooltiptext">Mở khóa kỹ năng AI ( ví dụ Zom bóng lúc phát của nishikawa) </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Cam cao
+                                <span class="tooltiptext">Góc nhìn camera cao hơn</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Không thời gian hồi chiêu V2
+                                <span class="tooltiptext">Sử dụng skill liên tục không cần chờ - phiên bản nâng
+                                    cao</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://t.me/tiptipiosmod" class="cta-button" target="_blank">
+                        📱 Mua Vip 1
+                    </a>
+                </div>
+
+                <div class="feature-card vip2-card fade-in">
+                    <div class="card-header">
+                        <div class="card-icon">👑</div>
+                        <div>
+                            <h3 class="card-title">VIP 2</h3>
+                            <p class="card-subtitle">💵 <span
+                                    style="font-size: 1.2rem; font-weight: 700; color: #7c3aed;">100k/tháng</span></p>
+                        </div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>
+                            <div class="tooltip">
+                                My+, En+, Ball
+                                <span class="tooltiptext">Thắng trận đấu 1 cách nhanh chóng</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                No Win
+                                <span class="tooltiptext">trận đấu vô tận </span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tooltip">
+                                Tất cả tính năng VIP 1
+                                <span class="tooltiptext">Bao gồm toàn bộ tính năng của gói VIP 1</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="https://t.me/tiptipiosmod" class="cta-button" target="_blank">
+                        📱 Mua Vip 2
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="info-cards">
+            <div class="info-card fade-in">
+                <h3><i class="fas fa-exclamation-triangle"></i> Lưu Ý Quan Trọng</h3>
+                <p> Không xoá bản cũ nếu đã được duyệt UDID. Cứ cài bình thường bản mới nó sẽ đè lên bản cũ rồi chơi
+                    tiếp nhé.</p>
+            </div>
+
+            <div class="info-card fade-in">
+                <h3><i class="fas fa-play-circle"></i> Hướng Dẫn Chi Tiết</h3>
+                <p>Xem video hướng dẫn sử dụng chi tiết để có trải nghiệm tốt nhất.</p>
+                <a href="https://youtu.be/6_byXJV28Mg?si=YL1IKpvs7U5HcoO5" class="cta-button" target="_blank">
+                    🌐 Xem Hướng Dẫn
+                </a>
+            </div>
+
+            <div class="info-card fade-in">
+                <h3><i class="fas fa-user-shield"></i> Liên Hệ Admin</h3>
+                <p>Cần hỗ trợ hoặc đăng ký VIP? Liên hệ admin để được tư vấn chi tiết.</p>
+                <a href="https://t.me/tiptipiosmod" class="cta-button" target="_blank">
+                    📱 Admin: @tiptipiosmod
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 The Spike Mod - Tip Tip</p>
+            <p>⚠️ Chỉ dành cho mục đích giải trí. Sử dụng có trách nhiệm.</p>
+            <p>⭐️ Telegram: @tiptipiosmod 😂</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle - không cần thiết nữa vì đã bỏ navbar
+        function toggleMobileMenu() {
+            // Bỏ function này
+        }
+
+        // Close mobile menu - không cần thiết nữa
+        // Bỏ event listeners cho nav-links
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add interactive effects (disabled on touch devices)
+        if (window.matchMedia('(hover: hover)').matches) {
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        }
+
+        // Optimize for mobile performance
+        let ticking = false;
+
+        function updateOnScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', updateOnScroll, { passive: true });
+
+        // Touch gesture improvements
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', e => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            // Bỏ mobile menu swipe vì không còn navbar
+        }
+
+        // Prevent zoom on double tap for iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Enhanced features
+        window.addEventListener('load', function () {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                showNotification('Chào mừng đến với The Spike Mod! 🎉');
+            }, 1000);
+        });
+
+        // Progress bar and scroll to top
+        window.addEventListener('scroll', function () {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+
+            const scrollToTop = document.getElementById('scrollToTop');
+            if (winScroll > 300) {
+                scrollToTop.classList.add('visible');
+            } else {
+                scrollToTop.classList.remove('visible');
+            }
+        });
+
+        document.getElementById('scrollToTop').addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Notification system
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+
+            notificationText.textContent = message;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        function closeNotification() {
+            document.getElementById('notification').classList.remove('show');
+        }
+
+        // Download tracking
+        document.querySelectorAll('.download-button, .cta-button').forEach(button => {
+            button.addEventListener('click', function (e) {
+                const buttonText = this.textContent.trim();
+                if (buttonText.includes('Tải')) {
+                    showNotification('Đang chuyển hướng đến link tải xuống... ⬇️');
+                } else if (buttonText.includes('Admin') || buttonText.includes('Liên Hệ')) {
+                    showNotification('Đang mở Telegram... 📱');
+                } else if (buttonText.includes('Hướng Dẫn')) {
+                    showNotification('Đang mở video hướng dẫn... 🎥');
+                }
+            });
+        });
+
+        // Add fade-in class
+        document.addEventListener('DOMContentLoaded', function () {
+            const elements = document.querySelectorAll('.feature-card, .info-card, .pricing-section');
+            elements.forEach(el => {
+                el.classList.add('fade-in');
+            });
+        });
+
+        // Fade-in class definition
+        const style = document.createElement('style');
+        style.textContent = `
+            .fade-in {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: all 0.6s ease;
+            }
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
